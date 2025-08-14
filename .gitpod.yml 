@@ -1,0 +1,14 @@
+image:
+  file: .gitpod.Dockerfile
+
+ports:
+  - port: 9871
+    onOpen: open-browser
+
+tasks:
+  - name: Start GPT-SoVITS WebUI
+    init: |
+      echo "Gitpod Init: Container bereit"
+    command: |
+      cd /workspace
+      python webui.py --share --port 9871
