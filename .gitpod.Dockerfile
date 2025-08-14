@@ -1,9 +1,8 @@
-FROM xxxxrt666/gpt-sovits:latest-cu126
+FROM python:3.11-slim
 
-# System-Tools & ffmpeg für Audiohandling
-RUN apt-get update && \
-    apt-get install -y ffmpeg git nano && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY app.py /app
+RUN pip install flask flask-cors
 
-# Optional: deutsches Sprachpaket oder zusätzliche Python-Pakete
-# RUN pip install some-extra-package
+EXPOSE 9871
+CMD ["python", "app.py"]
