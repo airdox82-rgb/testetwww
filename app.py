@@ -5,6 +5,8 @@ import os
 import time
 import threading
 import uuid
+import subprocess
+import tempfile
 
 status_lock = threading.Lock()
 UPLOAD_FOLDER = "uploads"
@@ -50,20 +52,48 @@ def upload_sample():
     return jsonify({"sample": f.filename})
 
 def _run_training():
-    """Simulates a long-running training process in the background."""
+    """Runs the actual training process."""
     with status_lock:
         status_data["progress"] = 0
         status_data["log"].append(f"[{time.strftime('%H:%M:%S')}] Training gestartet")
 
-    # Simulierter Fortschritt
-    for i in range(1, 11):
-        time.sleep(2)  # Simulate work being done
+    try:
+        # 1. ASR
         with status_lock:
-            status_data["progress"] = i * 10
+            status_data["log"].append(f"[{time.strftime('%H:%M:%S')}] Starte Spracherkennung (ASR)")
+        
+        asr_output_dir = tempfile.mkdtemp()
+        asr_process = subprocess.run(
+            [
+                "/home/gitpod/.pyenv/shims/python",
+                "tools/asr/fasterwhisper_asr.py",
+                "-i", UPLOAD_FOLDER,
+                "-o", asr_output_dir,
+                "-s", "large-v3",
+                "-l", "de", # Assuming German
+                "-p", "float16"
+            ],
+            capture_output=True,
+            text=True,
+        )
+        if asr_process.returncode != 0:
+            with status_lock:
+                status_data["log"].append(f"[{time.strftime('%H:%M:%S')}] ASR fehlgeschlagen: {asr_process.stderr}")
+                status_data["training"] = False
+            return
 
-    with status_lock:
-        status_data["training"] = False
-        status_data["log"].append(f"[{time.strftime('%H:%M:%S')}] Training beendet")
+        transcription_file = os.path.join(asr_output_dir, f"{os.path.basename(UPLOAD_FOLDER)}.list")
+        with status_lock:
+            status_data["log"].append(f"[{time.strftime('%H:%M:%S')}] ASR abgeschlossen. Transkriptionsdatei: {transcription_file}")
+            status_data["progress"] = 100 # For now, let's say ASR is the whole process
+
+    except Exception as e:
+        with status_lock:
+            status_data["log"].append(f"[{time.strftime('%H:%M:%S')}] Ein Fehler ist aufgetreten: {e}")
+    finally:
+        with status_lock:
+            status_data["training"] = False
+            status_data["log"].append(f"[{time.strftime('%H:%M:%S')}] Training beendet")
 
 @app.route("/api/train", methods=["POST"])
 def train():
