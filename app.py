@@ -10,7 +10,11 @@ status_lock = threading.Lock()
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
+
+@app.route('/')
+def index():
+    return send_from_directory(app.static_folder, 'index.html')
 CORS(app)  # Wichtig für deine GUI
 
 status_data = {
