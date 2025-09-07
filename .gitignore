@@ -1,0 +1,29 @@
+# Gitpod
+.gitpod.Dockerfile
+.gitpod.yml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python/
+env/
+venv/
+pip-log.txt
+pip-delete-this-arg-in-pip.log
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+.Trashes
+Thumbs.db
+
+# Uploads
+uploads/
+
+# Pretrained models that are downloaded
+pretrained_models/bert/
