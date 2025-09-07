@@ -7,14 +7,18 @@ import subprocess
 
 from torch.utils import cpp_extension
 
-"""
-Setting this param to a list has a problem of generating different compilation commands (with diferent order of architectures) and leading to recompilation of fused kernels. 
-Set it to empty stringo avoid recompilation and assign arch flags explicity in extra_cuda_cflags below
-"""
+# Setting this param to a list has a problem of generating different compilation commands (with diferent order of architectures) and leading to recompilation of fused kernels.
+# Set it to empty stringo avoid recompilation and assign arch flags explicity in extra_cuda_cflags below
 os.environ["TORCH_CUDA_ARCH_LIST"] = ""
 
 
 def load():
+    # If CUDA_HOME is not set, we cannot compile CUDA extensions.
+    # Return None or a dummy object to prevent errors.
+    if cpp_extension.CUDA_HOME is None:
+        print("Warning: CUDA_HOME is not set. Cannot load CUDA extensions.")
+        return None # Or a mock object if needed by other parts of the code
+
     # Check if cuda 11 is installed for compute capability 8.0
     cc_flag = []
     _, bare_metal_major, _ = _get_cuda_bare_metal_version(cpp_extension.CUDA_HOME)
@@ -64,6 +68,7 @@ def load():
 
 
 def _get_cuda_bare_metal_version(cuda_dir):
+    # This function should only be called if cuda_dir is not None
     raw_output = subprocess.check_output([cuda_dir + "/bin/nvcc", "-V"], universal_newlines=True)
     output = raw_output.split()
     release_idx = output.index("release") + 1

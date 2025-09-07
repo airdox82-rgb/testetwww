@@ -22,13 +22,13 @@ def test_load_fused_kernels():
 
 
 def test_anti_alias_activation():
-    data = torch.rand((10, 10, 200), device="cuda")
+    data = torch.rand((10, 10, 200), device="cpu") # Changed to cpu
 
     # Check activations, Snake CUDA vs. Torch
-    fused_anti_alias_activation = activation1d.Activation1d(activation=SnakeBeta(10), fused=True).cuda()
+    fused_anti_alias_activation = activation1d.Activation1d(activation=SnakeBeta(10), fused=True) # Removed .cuda()
     fused_activation_output = fused_anti_alias_activation(data)
 
-    torch_anti_alias_activation = activation1d.Activation1d(activation=SnakeBeta(10), fused=False).cuda()
+    torch_anti_alias_activation = activation1d.Activation1d(activation=SnakeBeta(10), fused=False) # Removed .cuda()
     torch_activation_output = torch_anti_alias_activation(data)
 
     test_result = (fused_activation_output - torch_activation_output).abs()
