@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.insert(0, os.getcwd())
 """
 按中英混合识别
 按日英混合识别
@@ -63,8 +66,8 @@ else:
 with open("./weight.json", "r", encoding="utf-8") as file:
     weight_data = file.read()
     weight_data = json.loads(weight_data)
-    gpt_path = os.environ.get("gpt_path", weight_data.get("GPT", {}).get(version, GPT_names[-1]))
-    sovits_path = os.environ.get("sovits_path", weight_data.get("SoVITS", {}).get(version, SoVITS_names[0]))
+    gpt_path = os.environ.get("gpt_path", weight_data.get("GPT", {}).get(version, name2gpt_path[GPT_names[-1]]))
+    sovits_path = os.environ.get("sovits_path", weight_data.get("SoVITS", {}).get(version, name2sovits_path[SoVITS_names[0]]))
     if isinstance(gpt_path, list):
         gpt_path = gpt_path[0]
     if isinstance(sovits_path, list):
@@ -80,7 +83,7 @@ with open("./weight.json", "r", encoding="utf-8") as file:
 # print(weight_data.get("GPT", {}).get(version, GPT_names[-1]))
 
 cnhubert_base_path = os.environ.get("cnhubert_base_path", "GPT_SoVITS/pretrained_models/chinese-hubert-base")
-bert_path = os.environ.get("bert_path", "GPT_SoVITS/pretrained_models/chinese-roberta-wwm-ext-large")
+bert_path = os.environ.get("bert_path", "pretrained_models/bert")
 infer_ttswebui = os.environ.get("infer_ttswebui", 9872)
 infer_ttswebui = int(infer_ttswebui)
 is_share = os.environ.get("is_share", "False")

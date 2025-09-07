@@ -1,8 +1,13 @@
-/workspace/deepdive-jette/GPT_SoVITS/inference_webui.py:1104: SyntaxWarning: invalid escape sequence '\d'
+/workspace/deepdive-jette/GPT_SoVITS/inference_webui.py:1107: SyntaxWarning: invalid escape sequence '\d'
   parts = re.split("(\d+)", s)
 /workspace/.pyenv_mirror/user/current/lib/python3.12/site-packages/jieba/_compat.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
   import pkg_resources
+get_weights_names called (placeholder)
+GPT_SoVITS/pretrained_models/vocoder.pth v1 v1 False
 Traceback (most recent call last):
-  File "/workspace/deepdive-jette/GPT_SoVITS/inference_webui.py", line 47, in <module>
-    from config import change_choices, get_weights_names, name2gpt_path, name2sovits_path
-ModuleNotFoundError: No module named 'config'
+  File "/workspace/deepdive-jette/GPT_SoVITS/inference_webui.py", line 403, in <module>
+    change_gpt_weights(gpt_path)
+  File "/workspace/deepdive-jette/GPT_SoVITS/inference_webui.py", line 386, in change_gpt_weights
+    max_sec = config["data"]["max_sec"]
+              ~~~~~~~~~~~~~~^^^^^^^^^^^
+KeyError: 'max_sec'
