@@ -9,4 +9,4 @@ services:
       - "9871:9871"
     volumes:
       - ./:/workspace
-    shm_size: "16gbG"
+    shm_size: "16g"
