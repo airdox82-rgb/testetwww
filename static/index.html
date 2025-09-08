@@ -1,49 +1,69 @@
 
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice Cloning Benutzeroberfläche</title>
+    <title>Voice Cloning UI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Voice Cloning Benutzeroberfläche</h1>
-
-    <div class="container">
-        <div class="section">
-            <h2>Status</h2>
+    <header class="main-header">
+        <div class="logo"><i class="fa-solid fa-microphone-lines"></i> Voice Cloning</div>
+        <nav>
+            <ul>
+                <li><a href="#status"><i class="fa-solid fa-gauge"></i> Status</a></li>
+                <li><a href="#samples"><i class="fa-solid fa-music"></i> Beispiele</a></li>
+                <li><a href="#train"><i class="fa-solid fa-graduation-cap"></i> Training</a></li>
+                <li><a href="#synth"><i class="fa-solid fa-wave-square"></i> Synthese</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+        <section class="card" id="status">
+            <h2><i class="fa-solid fa-gauge"></i> Status</h2>
             <div id="status-content">
-                <p>Training: <span id="training-status">...</span></p>
-                <p>Synthese: <span id="synthesizing-status">...</span></p>
-                <p>Fortschritt: <span id="progress-bar">...</span></p>
-                <p>Ausgabedatei: <span id="output-file">...</span></p>
-                <h3>Protokoll</h3>
+                <div class="status-row">
+                    <span><i class="fa-solid fa-gears"></i> Training:</span> <span id="training-status">...</span>
+                </div>
+                <div class="status-row">
+                    <span><i class="fa-solid fa-volume-high"></i> Synthese:</span> <span id="synthesizing-status">...</span>
+                </div>
+                <div class="status-row">
+                    <span><i class="fa-solid fa-bars-progress"></i> Fortschritt:</span> <span id="progress-bar">...</span>
+                </div>
+                <div class="status-row">
+                    <span><i class="fa-solid fa-file-audio"></i> Ausgabedatei:</span> <span id="output-file">...</span>
+                </div>
+                <h3><i class="fa-solid fa-list"></i> Protokoll</h3>
                 <ul id="log-list"></ul>
             </div>
-        </div>
-
-        <div class="section">
-            <h2>Beispiele</h2>
+        </section>
+        <section class="card" id="samples">
+            <h2><i class="fa-solid fa-music"></i> Beispiele</h2>
             <ul id="samples-list"></ul>
-            <h3>Beispiel hochladen</h3>
-            <input type="file" id="sample-file">
-            <button id="upload-button">Hochladen</button>
-        </div>
-
-        <div class="section">
-            <h2>Training</h2>
-            <button id="train-button">Training starten</button>
-        </div>
-
-        <div class="section">
-            <h2>Synthese</h2>
-            <textarea id="synthesis-text" rows="4" cols="50"></textarea>
+            <div class="upload-area">
+                <h3><i class="fa-solid fa-upload"></i> Beispiel hochladen</h3>
+                <input type="file" id="sample-file">
+                <button id="upload-button"><i class="fa-solid fa-cloud-arrow-up"></i> Hochladen</button>
+            </div>
+        </section>
+        <section class="card" id="train">
+            <h2><i class="fa-solid fa-graduation-cap"></i> Training</h2>
+            <button id="train-button"><i class="fa-solid fa-play"></i> Training starten</button>
+        </section>
+        <section class="card" id="synth">
+            <h2><i class="fa-solid fa-wave-square"></i> Synthese</h2>
+            <textarea id="synthesis-text" rows="4" cols="50" placeholder="Text für die Sprachsynthese eingeben..."></textarea>
             <br>
-            <button id="synthesize-button">Synthese starten</button>
-        </div>
-    </div>
-
+            <button id="synthesize-button"><i class="fa-solid fa-magic"></i> Synthese starten</button>
+        </section>
+    </main>
+    <footer class="main-footer">
+        <span>© 2025 Voice Cloning | Modern UI powered by GPT-SoVITS</span>
+    </footer>
     <script src="/static/script.js"></script>
 </body>
 </html>
