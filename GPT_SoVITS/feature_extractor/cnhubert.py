@@ -16,7 +16,8 @@ from transformers import (
 import utils
 import torch.nn as nn
 
-cnhubert_base_path = None
+import os
+cnhubert_base_path = os.environ.get("cnhubert_base_path", "facebook/hubert-large-ll60k")
 
 
 class CNHubert(nn.Module):
@@ -24,12 +25,9 @@ class CNHubert(nn.Module):
         super().__init__()
         if base_path is None:
             base_path = cnhubert_base_path
-        if os.path.exists(base_path):
-            ...
-        else:
-            raise FileNotFoundError(base_path)
-        self.model = HubertModel.from_pretrained(base_path, local_files_only=True)
-        self.feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(base_path, local_files_only=True)
+        # Erlaube Huggingface-Modellnamen und entferne lokale Pfadprüfung
+        self.model = HubertModel.from_pretrained(base_path, local_files_only=False)
+        self.feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(base_path, local_files_only=False)
 
     def forward(self, x):
         input_values = self.feature_extractor(x, return_tensors="pt", sampling_rate=16000).input_values.to(x.device)

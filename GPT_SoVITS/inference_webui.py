@@ -82,8 +82,8 @@ with open("./weight.json", "r", encoding="utf-8") as file:
 # print(version)###GPT version里没有s2的v2pro
 # print(weight_data.get("GPT", {}).get(version, GPT_names[-1]))
 
-cnhubert_base_path = os.environ.get("cnhubert_base_path", "GPT_SoVITS/pretrained_models/chinese-hubert-base")
-bert_path = os.environ.get("bert_path", "pretrained_models/bert")
+cnhubert_base_path = os.environ.get("cnhubert_base_path", "facebook/hubert-large-ll60k")
+bert_path = os.environ.get("bert_path", "bert-base-german-cased")
 infer_ttswebui = os.environ.get("infer_ttswebui", 9872)
 infer_ttswebui = int(infer_ttswebui)
 is_share = os.environ.get("is_share", "False")
