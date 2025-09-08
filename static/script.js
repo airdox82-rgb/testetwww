@@ -67,21 +67,49 @@ document.addEventListener("DOMContentLoaded", () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        try {
-            const response = await fetch(`${API_URL}/api/upload_sample`, {
-                method: "POST",
-                body: formData
-            });
-            const data = await response.json();
-            if (data.error) {
-                alert(`Fehler: ${data.error}`);
-            } else {
-                await listSamples();
-                await updateStatus();
+        // Fortschrittsanzeige-Elemente
+        const progressContainer = document.getElementById("upload-progress-container");
+        const progressInner = document.getElementById("upload-progress-inner");
+        const progressLabel = document.getElementById("upload-progress-label");
+        progressContainer.style.display = "block";
+        progressInner.style.width = "0%";
+        progressLabel.textContent = "Upload läuft...";
+
+        // XMLHttpRequest für Fortschritt
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", `${API_URL}/api/upload_sample`, true);
+
+        xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+                const percent = Math.round((e.loaded / e.total) * 100);
+                progressInner.style.width = percent + "%";
+                progressLabel.textContent = `Upload läuft... (${percent}%)`;
             }
-        } catch (error) {
-            console.error("Fehler beim Hochladen der Datei:", error);
-        }
+        };
+        xhr.onload = async function () {
+            progressLabel.textContent = "Upload abgeschlossen!";
+            setTimeout(() => {
+                progressContainer.style.display = "none";
+            }, 1200);
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                if (data.error) {
+                    alert(`Fehler: ${data.error}`);
+                } else {
+                    await listSamples();
+                    await updateStatus();
+                }
+            } else {
+                alert("Fehler beim Hochladen der Datei.");
+            }
+        };
+        xhr.onerror = function () {
+            progressLabel.textContent = "Fehler beim Upload!";
+            setTimeout(() => {
+                progressContainer.style.display = "none";
+            }, 1200);
+        };
+        xhr.send(formData);
     });
 
     trainButton.addEventListener("click", async () => {

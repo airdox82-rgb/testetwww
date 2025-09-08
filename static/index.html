@@ -48,6 +48,12 @@
                 <h3><i class="fa-solid fa-upload"></i> Beispiel hochladen</h3>
                 <input type="file" id="sample-file">
                 <button id="upload-button"><i class="fa-solid fa-cloud-arrow-up"></i> Hochladen</button>
+                <div id="upload-progress-container" style="display:none; margin-top:10px;">
+                    <div id="upload-progress-label" style="margin-bottom:4px; color:#007bff; font-weight:500;">Upload läuft...</div>
+                    <div id="upload-progress-bar" style="width:100%; background:#e3e6ee; border-radius:8px;">
+                        <div id="upload-progress-inner" style="height:18px; background:linear-gradient(90deg,#007bff,#4CAF50); border-radius:8px; width:0%; transition:width 0.3s;"></div>
+                    </div>
+                </div>
             </div>
         </section>
         <section class="card" id="train">

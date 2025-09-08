@@ -8,5 +8,5 @@ services:
     ports:
       - "9871:9871"
     volumes:
-      - ./:/workspace
+      - ./GPT_SoVITS:/workspace
     shm_size: "16g"
